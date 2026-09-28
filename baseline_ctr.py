@@ -34,3 +34,15 @@ print("Ciphertext (hex) with target inserted: {}\nNote the new sequence {} where
 decryptor = cipher.decryptor()
 recovered = (decryptor.update(tampered_ciphertext) + decryptor.finalize()).decode("unicode_escape")
 print("Recovered (tampered) plaintext: {}".format(recovered))
+
+#Replay attack
+
+#To modify the target to a specific equal-length value, encoded_target can be used
+tampered_ciphertext = bytes.fromhex(ciphertext.hex()[:22] + b"HACK".hex() + ciphertext.hex()[30:])
+
+print("REPLAY:\nCiphertext (hex) with target inserted: {}".format(tampered_ciphertext.hex()))
+
+#Decrypt to show tampered plaintext
+decryptor = cipher.decryptor()
+recovered = (decryptor.update(tampered_ciphertext) + decryptor.finalize()).decode("unicode_escape")
+print("Recovered (tampered) plaintext: {}".format(recovered))
