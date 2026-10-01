@@ -2,7 +2,6 @@ import os
 import struct
 from cryptography.hazmat.primitives import hashes, hmac, serialization
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
-from cryptography.hazmat.primitives.hashes import Hash
 
 class Session:
     def __init__(self, identity):
