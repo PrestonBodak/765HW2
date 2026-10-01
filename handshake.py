@@ -86,7 +86,7 @@ node = Session("Node")
 # || Gateway Public Key Length || Gateway Public Key || Node Public Key Length || Node Public Key || Gateway Nonce Length || Gateway Nonce || Node Nonce Length || Node Nonce
 protocol = b"CSCE465-HS-v2"
 group = b"ffdhe3072"
-TRANSCRIPT_FORMAT = b">isisisisisisisis"
+TRANSCRIPT_FORMAT = b">i13si9si7si4si384si384si16si16s"
 transcript = struct.pack(TRANSCRIPT_FORMAT, 
                          len(protocol), 
                          protocol, 

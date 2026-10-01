@@ -48,3 +48,10 @@ key exchange is necessary to exchange encrypted messages over the exposed channe
 This process is secure against a wide variety of attacks. The communication channel is safe against replays because no authenticating information is publicly shared and it all
 lies behind the information encoded with private keys. Without someone's private key, you cannot replay something like a signature because it can be invalidated with your immutable public key.
 The ephemeral nature of these sessions also provides forward secrecy, since the DH keys are re-generated with a nonce for each session, making any exposed key only applicable for that session. However, much of this security lies on the authenticity provided by the signature exchange. Without the use of signatures, the DH key exchange alone does not guarantee that you are communicating with the intended party. Instead, a malicious actor could impersonate another person, initiate the key exchange, and freely receive the information they desire.
+
+# Task 3
+
+My implementation builds upon the structure first created for Task 2. Specifically, it provides greater key separation for each direction and enables the sending and receiving of encrypted messages for each party. Following the authenticated key exchange from Task 2, each individual is able to encrypt a message with seal() and send it to a given destination.
+The receiver is then able to take that messsage and its metadata and decrypt it using open_record(). This full exchange can be seen in the screenshot below:
+
+![alt text](images/task3.png)
