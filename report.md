@@ -57,3 +57,52 @@ The receiver is then able to take that messsage and its metadata and decrypt it 
 ![alt text](images/task3.png)
 
 # Task 4
+
+### Task Implementation
+
+To implement Task 4, the Session class from Task 3 was exported into its own file to be imported into multiple test files to reduce repeated code. This framework was
+used to simulate different attacker scenarios using the information that may be transmitted across an exposed channel.
+
+### Security Note
+
+State the attacker model and non-goals:
+For this simulation, the attacker model is focused around a man-in-the-middle or some other malicious actor who is able to sniff traffic
+over an insecure/public channel. This enables the threat actor to collect data such as header information, ciphertext, nonces, and public
+keys that are transferred between two parties to establish secure communication. It is not the goal of the attacker to override authentication
+or to coerce an individual to send sensitive data. Additionally, the simulated attacker does not attempt to modify any private data such as
+private keys which are used to set up the communication channel.
+
+Explain why CTR requires unique IVs:
+When using CTR mode for AES, the initial value (IV) is incremented for each block which is passed through the encryption engine. For instance,
+a basic IV of 1 will be used for the first block, which is automatically fed to the next block as 2, and to the next block as 3, and so on
+and so forth. However, this poses a significant security risk in the event of a leaked IV. Since the block size is known, an attacker is able to
+decrypt an entire sequence if the key and IV is leaked. To counteract this, CTR requires a unique IV per session/message such that only one 
+sequence is vulnerable if the IV is leaked as opposed to multiple messages.
+
+Explain why verify-before-decrypt matters:
+With regards to authenticity and confidentiality, it is important to adopt a verify-before-decrypt mindset when implementing secure
+communication channels. Verification can take two forms in this context: authenticating the identities of both communicators with
+known public keys and verifying the MAC of a message. Ensuring a message comes from an authenticated source prior to decrypting a
+message ensures that harmful content is not decrypted and stored on the machine, such as an injection attack for an AI agent. With
+regards to verification of MACs, even ciphertext sent over a public channel may be intercepted and modified. As a result, MACs serve
+as an essential step to knowing if a message has been tampered with and should be disposed of, since they are created based on the
+original unmodified message.
+
+Explain why independent encryption and MAC keys are used:
+When performing multiple exchanges prior to initiating communication such as RSA signatures and Diffie-Hellman, implementing
+key separation and independent encryption is an essential part to securing the communication medium. In the event that a threat
+actor is able to recover a key used for one of these processes, having multiple keys prevents the rest of the messages from being
+completely vulnerable on the channel. Similarly, a unique MAC key prevents the threat actor from modifying the ciphertext and
+simultaneously generating their own MAC such that the message appears unmodified.
+
+Compare the construction briefly with an AEAD mode such as AES-GCM:
+Both the method of encryption used in this simulation and AES-GCM are similar in that they both prioritize authentication prior
+to generating and transmitting encrypted messages. The simulation achieves this via an independent RSA signature exchange prior to
+a standard Diffie-Hellman exchange and standard AES-CTR encryption, while this process is more unified under AES-GCM as the authentication
+is built into the ciphertext blocks.
+
+Explain why a valid protected record may still contain a dangerous authorized tool call:
+For an authenticated communication between two parties, messages may still contain malicious plaintext. Although the identity of
+a sender of data may match their public key and the messages may be encrypted, this still allows a user to send harmful text such as
+a dangerous tool call to their destination if the two-way communication is accepted. Ultimately, the receiver (such as an AI agent),
+may still decrypt the message and act on it with minimal consideration of the contents.
