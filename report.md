@@ -61,7 +61,8 @@ The receiver is then able to take that messsage and its metadata and decrypt it 
 ### Task Implementation
 
 To implement Task 4, the Session class from Task 3 was exported into its own file to be imported into multiple test files to reduce repeated code. This framework was
-used to simulate different attacker scenarios using the information that may be transmitted across an exposed channel.
+used to simulate different attacker scenarios using the information that may be transmitted across an exposed channel. Running each scenario reveals the effectiveness of
+the security stuctures embedded within the communication protocol (HMAC verification, use of header fields to detect modified data, etc.).
 
 ### Security Note
 
